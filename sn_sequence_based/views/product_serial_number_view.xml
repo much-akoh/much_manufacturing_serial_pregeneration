@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_sequence_view" model="ir.ui.view">
+        <field name="name">sequence.form.inherit.view</field>
+        <field name="model">product.serial.number</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="base.sequence_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sequence']" position="after">
+                <page name="products" string="Products">
+                      <field name="product_ids" nolabel="1">
+                        <tree>
+                            <field name="name"/>
+                            <field name="product_serial_id"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_serial_sequence_view_tree" model="ir.ui.view">
+            <field name="model">product.serial.number</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="prefix"/>
+                    <field name="padding"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="number_next_actual" string="Next Number"/>
+                    <field name="number_increment"/>
+                    <field name="implementation"/>
+                </tree>
+            </field>
+    </record>
+    <record id="action_product_serial_number" model="ir.actions.act_window">
+        <field name="name">Serial Number Circles</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="product_serial_sequence_view_tree"/>
+        <field name="res_model">product.serial.number</field>
+    </record>
+    <menuitem
+            action="action_product_serial_number"
+            id="menu_product_serial_number"
+            parent="stock.menu_product_in_config_stock"
+            sequence="52"
+            name="Serial Number Circles"
+    />
+</odoo>

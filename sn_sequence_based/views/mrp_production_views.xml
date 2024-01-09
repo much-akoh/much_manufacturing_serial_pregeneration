@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="mrp_production_form_view_inherit" model="ir.ui.view">
+        <field name="name">mrp.production.inherit.view</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_scrap']" position="before">
+                <button name="button_generate_serial_numbers"
+                        type="object"
+                        string="Generate Serials"
+                        invisible="product_tracking in ('lot', 'none', False) or state not in ('confirmed', 'progress')"
+                        data-hotkey="x"/>
+            </xpath>
+            <xpath expr="//page[@name='miscellaneous']" position="after">
+                <page name="serial_numbers" string="Serial Numbers">
+                      <field name="lot_ids" nolabel="1" readonly="1"/>
+                </page>
+            </xpath>
+            <xpath expr="//button[@name='action_generate_serial']" position="attributes">
+                <attribute name="invisible">product_tracking in ('serial', 'none', False) or lot_producing_id != False</attribute>
+            </xpath>
+            <xpath expr="//field[@name='lot_producing_id']" position="attributes">
+                <attribute name="domain">[('id', 'in', lot_ids)]</attribute>
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
